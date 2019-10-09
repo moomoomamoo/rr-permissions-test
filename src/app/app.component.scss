@@ -1,0 +1,68 @@
+.layout {
+    display: flex;
+}
+
+.layout-section {
+    margin-right: 24px;
+}
+
+.row {
+    display: flex;
+
+    flex-direction: row;
+}
+
+.col {
+    display: flex;
+
+    flex-direction: column;
+}
+
+.cell {
+    width: 140px;
+    border-right: black solid 1px;
+    border-bottom: black solid 1px;
+    line-height: 3;
+}
+
+.cell.center {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.cell.SKIP {
+    background: #757575;    
+}
+
+.cell.TRUE {
+    background: #4caf50;
+}
+
+.cell.FALSE {
+    background: #f44336;
+}
+
+label ,mat-radio-button {
+    margin-right: 24px
+}
+
+mat-card {
+    margin: 24px;
+}
+
+.example-section {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 48px;
+}
+
+.example-margin {
+    margin: 0 10px;
+}
+  
+.class-map {
+    display: flex;
+    flex-direction: column;
+}
