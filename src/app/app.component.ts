@@ -84,7 +84,7 @@ export interface LocationProfile extends Profile {
 
     canULocation: boolean;
     canCUDLocationProfiles: boolean;
-    canCUDAnyLocationProfiles: boolean;// Allow creating location profile with any permissions (instead of being limited to equal or less)
+    canCUDLocationProfilesWithAnyPermissions: boolean;// Allow creating location profile with any permissions (instead of being limited to equal or less)
     canCUDSurveysGroupsCategories: boolean;
     canCUDSubjects: boolean;
     canCUDSubjectsFromAssignedGroups: boolean;
@@ -432,7 +432,7 @@ function canActivateNetworkProfile(profile: Profile, classMap: ClassMap) {
 function canDeleteNetworkProfile(profile: Profile, classMap: ClassMap) {
     if (profile.isSystemProfile) {
         const systemProfile = profile as SystemProfile;
-        return systemProfile.canCUNetworksAndBelow;
+        return systemProfile.canDNetworksAndBelow;
     }
 
     if (profile.isNetworkProfile) {
@@ -568,7 +568,7 @@ function canActivateLocation(profile: Profile, classMap: ClassMap) {
 function canDeleteLocation(profile: Profile, classMap: ClassMap) {
     if (profile.isSystemProfile) {
         const systemProfile = profile as SystemProfile;
-        return systemProfile.canCUNetworksAndBelow;
+        return systemProfile.canDNetworksAndBelow;
     }
 
     if (profile.isNetworkProfile) {
@@ -729,7 +729,7 @@ function canCreateLocationProfile(profile: Profile, classMap: ClassMap) {
     if (profile.isLocationProfile) {
         const locationProfile = profile as LocationProfile;
         if (classMap.network && classMap.network.text === locationProfile.network && classMap.location && classMap.location.text === locationProfile.location) {
-            return locationProfile.canCUDLocationProfiles || locationProfile.canCUDAnyLocationProfiles;
+            return locationProfile.canCUDLocationProfiles || locationProfile.canCUDLocationProfilesWithAnyPermissions;
         }
     }
 
@@ -754,7 +754,7 @@ function canUpdateLocationProfile(profile: Profile, classMap: ClassMap) {
     if (profile.isLocationProfile) {
         const locationProfile = profile as LocationProfile;
         if (classMap.network && classMap.network.text === locationProfile.network && classMap.location && classMap.location.text === locationProfile.location) {
-            return locationProfile.canCUDLocationProfiles;
+            return locationProfile.canCUDLocationProfiles || locationProfile.canCUDLocationProfilesWithAnyPermissions;
         }
     }
 
@@ -779,7 +779,7 @@ function canDisableLocationProfile(profile: Profile, classMap: ClassMap) {
     if (profile.isLocationProfile) {
         const locationProfile = profile as LocationProfile;
         if (classMap.network && classMap.network.text === locationProfile.network && classMap.location && classMap.location.text === locationProfile.location) {
-            return locationProfile.canCUDLocationProfiles;
+            return locationProfile.canCUDLocationProfiles || locationProfile.canCUDLocationProfilesWithAnyPermissions;
         }
     }
 
@@ -804,7 +804,7 @@ function canActivateLocationProfile(profile: Profile, classMap: ClassMap) {
     if (profile.isLocationProfile) {
         const locationProfile = profile as LocationProfile;
         if (classMap.network && classMap.network.text === locationProfile.network && classMap.location && classMap.location.text === locationProfile.location) {
-            return locationProfile.canCUDLocationProfiles;
+            return locationProfile.canCUDLocationProfiles || locationProfile.canCUDLocationProfilesWithAnyPermissions;
         }
     }
 
@@ -814,7 +814,7 @@ function canActivateLocationProfile(profile: Profile, classMap: ClassMap) {
 function canDeleteLocationProfile(profile: Profile, classMap: ClassMap) {
     if (profile.isSystemProfile) {
         const systemProfile = profile as SystemProfile;
-        return systemProfile.canCUNetworksAndBelow;
+        return systemProfile.canDNetworksAndBelow;
     }
 
     if (profile.isNetworkProfile) {
@@ -829,7 +829,7 @@ function canDeleteLocationProfile(profile: Profile, classMap: ClassMap) {
     if (profile.isLocationProfile) {
         const locationProfile = profile as LocationProfile;
         if (classMap.network && classMap.network.text === locationProfile.network && classMap.location && classMap.location.text === locationProfile.location) {
-            return locationProfile.canCUDLocationProfiles;
+            return locationProfile.canCUDLocationProfiles || locationProfile.canCUDLocationProfilesWithAnyPermissions;
         }
     }
 
@@ -971,7 +971,7 @@ function canActivateSurvey(profile: Profile, classMap: ClassMap) {
 function canDeleteSurvey(profile: Profile, classMap: ClassMap) {
     if (profile.isSystemProfile) {
         const systemProfile = profile as SystemProfile;
-        return systemProfile.canCUNetworksAndBelow;
+        return systemProfile.canDNetworksAndBelow;
     }
 
     if (profile.isNetworkProfile) {
@@ -1079,7 +1079,7 @@ function canUpdateCategory(profile: Profile, classMap: ClassMap) {
 function canDeleteCategory(profile: Profile, classMap: ClassMap) {
     if (profile.isSystemProfile) {
         const systemProfile = profile as SystemProfile;
-        return systemProfile.canCUNetworksAndBelow;
+        return systemProfile.canDNetworksAndBelow;
     }
 
     if (profile.isNetworkProfile) {
@@ -1236,7 +1236,7 @@ function canActivateGroup(profile: Profile, classMap: ClassMap) {
 function canDeleteGroup(profile: Profile, classMap: ClassMap) {
     if (profile.isSystemProfile) {
         const systemProfile = profile as SystemProfile;
-        return systemProfile.canCUNetworksAndBelow;
+        return systemProfile.canDNetworksAndBelow;
     }
 
     if (profile.isNetworkProfile) {
@@ -1343,7 +1343,7 @@ function canUpdateSubject(profile: Profile, classMap: ClassMap) {
 function canDeleteSubject(profile: Profile, classMap: ClassMap) {
     if (profile.isSystemProfile) {
         const systemProfile = profile as SystemProfile;
-        return systemProfile.canCUNetworksAndBelow;
+        return systemProfile.canDNetworksAndBelow;
     }
 
     if (profile.isNetworkProfile) {
@@ -1770,7 +1770,7 @@ export class AppComponent {
 
             canULocation: true,
             canCUDLocationProfiles: true,
-            canCUDAnyLocationProfiles: true,
+            canCUDLocationProfilesWithAnyPermissions: true,
             canCUDSurveysGroupsCategories: true,
             canCUDSubjects: true,
             canCUDSubjectsFromAssignedGroups: true,
