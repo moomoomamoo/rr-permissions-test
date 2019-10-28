@@ -3,21 +3,21 @@ import { MatRadioChange } from '@angular/material/radio';
 import { MatSelectChange } from '@angular/material/select';
 import { FormControl, FormGroup } from '@angular/forms';
 
-interface Location {
+export interface Location {
     text: string;
     groups: string[];
 }
 
-interface Network {
+export interface Network {
     text: string;
     locations: Location[];
 }
 
-interface System {
+export interface System {
     networks: Network[];
 }
 
-interface ClassMap {
+export interface ClassMap {
     network?: Network;
 
     networkProfile?: string;
@@ -34,7 +34,7 @@ interface ClassMap {
     rounder?: string;
 }
 
-interface Profile {
+export interface Profile {
     isSystemProfile: boolean;
     isNetworkProfile: boolean;
     isLocationProfile: boolean;
@@ -42,7 +42,7 @@ interface Profile {
     text: string;
 }
 
-interface SystemProfile extends Profile {
+export interface SystemProfile extends Profile {
     canCUDSystemProfiles: boolean;
     canCUNetworksAndBelow: boolean;
     canDNetworksAndBelow: boolean;
@@ -59,7 +59,7 @@ interface SystemProfile extends Profile {
     isLocationProfile: false;
 }
 
-interface NetworkProfile extends Profile {
+export interface NetworkProfile extends Profile {
     network: string;
 
     canUpdateNetwork: boolean;
@@ -76,7 +76,7 @@ interface NetworkProfile extends Profile {
     isLocationProfile: false;
 }
 
-interface LocationProfile extends Profile {
+export interface LocationProfile extends Profile {
     network: string;
     location: string;
 
@@ -84,6 +84,7 @@ interface LocationProfile extends Profile {
 
     canULocation: boolean;
     canCUDLocationProfiles: boolean;
+    canCUDAnyLocationProfiles: boolean;// Allow creating location profile with any permissions (instead of being limited to equal or less)
     canCUDSurveysGroupsCategories: boolean;
     canCUDSubjects: boolean;
     canCUDSubjectsFromAssignedGroups: boolean;
@@ -271,7 +272,8 @@ function canReadNetworkAddress(profile: Profile, classMap: ClassMap) {
 
 function canCreateNetworkAddress(profile: Profile, classMap: ClassMap) {
     if (profile.isSystemProfile) {
-        return true;
+        const systemProfile = profile as SystemProfile;
+        return systemProfile.canCUNetworksAndBelow;
     }
 
     if (profile.isNetworkProfile) {
@@ -317,7 +319,8 @@ function canReadNetworkNotes(profile: Profile, classMap: ClassMap) {
 
 function canCreateNetworkNotes(profile: Profile, classMap: ClassMap) {
     if (profile.isSystemProfile) {
-        return true;
+        const systemProfile = profile as SystemProfile;
+        return systemProfile.canCUNetworksAndBelow;
     }
 
     return false;
@@ -726,7 +729,7 @@ function canCreateLocationProfile(profile: Profile, classMap: ClassMap) {
     if (profile.isLocationProfile) {
         const locationProfile = profile as LocationProfile;
         if (classMap.network && classMap.network.text === locationProfile.network && classMap.location && classMap.location.text === locationProfile.location) {
-            return locationProfile.canCUDLocationProfiles;
+            return locationProfile.canCUDLocationProfiles || locationProfile.canCUDAnyLocationProfiles;
         }
     }
 
@@ -1475,12 +1478,12 @@ function stringIsInArray(ary: string[], str: string) {
 
 // END Helpers
 
-type Action = "Read" | "Create" | "Update" | "Disable" | "Activate" | "Delete";
-type Actable = 'System Profile' | 'Network' | 'Network Address' | 'Network Notes' | 'Network Profile' | 'Location' | 'Location Billing' | 'Location Address' | 'Location Notes' | 'Location Profile' | 'Survey' | 'Category' | 'Group' | 'Subject' | 'Round';
+export type Action = "Read" | "Create" | "Update" | "Disable" | "Activate" | "Delete";
+export type Actable = 'System Profile' | 'Network' | 'Network Address' | 'Network Notes' | 'Network Profile' | 'Location' | 'Location Billing' | 'Location Address' | 'Location Notes' | 'Location Profile' | 'Survey' | 'Category' | 'Group' | 'Subject' | 'Round';
 
-type PermissionValidation = ((profile: Profile, classMap: ClassMap) => boolean | 'skip') | 'skip';
+export type PermissionValidation = ((profile: Profile, classMap: ClassMap) => boolean | 'skip') | 'skip';
 
-class PermissionShallowValidation {
+export class PermissionShallowValidation {
     dependancy: Action;
 
     constructor(public validator: PermissionValidation, public action: Action) {
@@ -1498,47 +1501,47 @@ class PermissionShallowValidation {
     }
 }
 
-class ReadPermission extends PermissionShallowValidation {
+export class ReadPermission extends PermissionShallowValidation {
     constructor(validator: PermissionValidation) {
         super(validator, 'Read');
     }
 }
 
-class CreatePermission extends PermissionShallowValidation {
+export class CreatePermission extends PermissionShallowValidation {
     constructor(validator: PermissionValidation) {
         super(validator, 'Create');
     }
 }
 
-class UpdatePermission extends PermissionShallowValidation {
+export class UpdatePermission extends PermissionShallowValidation {
     constructor(validator: PermissionValidation) {
         super(validator, 'Update');
     }
 }
 
-class DisablePermission extends PermissionShallowValidation {
+export class DisablePermission extends PermissionShallowValidation {
     constructor(validator: PermissionValidation) {
         super(validator, 'Disable');
     }
 }
 
-class ActivatePermission extends PermissionShallowValidation {
+export class ActivatePermission extends PermissionShallowValidation {
     constructor(validator: PermissionValidation) {
         super(validator, 'Activate');
     }
 }
 
-class DeletePermission extends PermissionShallowValidation {
+export class DeletePermission extends PermissionShallowValidation {
     constructor(validator: PermissionValidation) {
         super(validator, 'Delete');
     }
 }
 
-type ActionMap = {
+export type ActionMap = {
     [action in Action]: PermissionShallowValidation;
 };
 
-class ShallowActionMap implements ActionMap {
+export class ShallowActionMap implements ActionMap {
     // actable: Actable;
     // 'Read': ReadPermission;
     // 'Create': CreatePermission;
@@ -1558,14 +1561,6 @@ class ShallowActionMap implements ActionMap {
 
         for (let dependancy of dependancies) {
             const dependancyCheck = this[dependancy];
-
-            // if (dependancyCheck.validator === 'skip') {
-            //     if (dependancy === action) {
-            //         return 'SKIP';
-            //     } else {
-            //         continue; // passes shallow
-            //     }
-            // }
 
             const dependancyCheckValue = dependancyCheck.validator === 'skip' ? 'skip' : dependancyCheck.validator(profile, classMap);
 
@@ -1594,11 +1589,11 @@ class ShallowActionMap implements ActionMap {
     }
 }
 
-type PermissionsTable = {
+export type PermissionsTable = {
     [actable in Actable]: ShallowActionMap;
 }
 
-type PermissionType = "System Profile" | "Network Profile" | "Location Profile";
+export type PermissionType = "System Profile" | "Network Profile" | "Location Profile";
 
 @Component({
     selector: 'app-root',
@@ -1775,6 +1770,7 @@ export class AppComponent {
 
             canULocation: true,
             canCUDLocationProfiles: true,
+            canCUDAnyLocationProfiles: true,
             canCUDSurveysGroupsCategories: true,
             canCUDSubjects: true,
             canCUDSubjectsFromAssignedGroups: true,
