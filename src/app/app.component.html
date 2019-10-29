@@ -16,8 +16,8 @@
                 <div [formGroup]="systemProfileFormGroup">
                     <mat-form-field>
                         <mat-label>System Profile</mat-label>
-                        <mat-select [value]="systemProfile.text" (selectionChange)="updateSystemProfileName($event)" [formControlName]="'systemProfileName'">
-                            <mat-option *ngFor="let name of profileTexts" [value]="name">{{ name }}</mat-option>
+                        <mat-select [value]="systemProfile" (selectionChange)="updateSystemProfile($event)" [formControlName]="'systemProfile'">
+                            <mat-option *ngFor="let profile of profiles" [value]="profile">{{ profile.text }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -63,16 +63,16 @@
                 <div [formGroup]="networkProfileFormGroup">
                     <mat-form-field>
                         <mat-label>Network Profile</mat-label>
-                        <mat-select [value]="networkProfile.text" (selectionChange)="updateNetworkProfileName($event)" [formControlName]="'networkProfileName'">
-                            <mat-option *ngFor="let name of profileTexts" [value]="name">{{ name }}</mat-option>
+                        <mat-select [value]="networkProfile" (selectionChange)="updateNetworkProfile($event)" [formControlName]="'networkProfile'">
+                            <mat-option *ngFor="let profile of profiles" [value]="profile">{{ profile.text }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
 
-                <p>Network: {{ networkProfile.network }}</p>
+                <p>Network: {{ networkProfile.networkKey }}</p>
 
                 <section class="example-section">
-                    <mat-checkbox class="example-margin" [(ngModel)]="networkProfile.canUpdateNetwork">Can Update Network</mat-checkbox>
+                    <mat-checkbox class="example-margin" [(ngModel)]="networkProfile.canUNetwork">Can Update Network</mat-checkbox>
                 </section>
 
                 <section class="example-section">
@@ -104,14 +104,14 @@
                 <div [formGroup]="locationProfileFormGroup">
                     <mat-form-field>
                         <mat-label>Location Profile</mat-label>
-                        <mat-select [value]="locationProfile.text" (selectionChange)="updateLocationProfileName($event)" [formControlName]="'locationProfileName'">
-                            <mat-option *ngFor="let name of profileTexts" [value]="name">{{ name }}</mat-option>
+                        <mat-select [value]="locationProfile" (selectionChange)="updateLocationProfile($event)" [formControlName]="'locationProfile'">
+                            <mat-option *ngFor="let profile of profiles" [value]="profile">{{ profile.text }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
 
-                <p>Network: {{ locationProfile.network }}</p>
-                <p>Location: {{ locationProfile.location }}</p>
+                <p>Network: {{ locationProfile.networkKey }}</p>
+                <p>Location: {{ locationProfile.locationKey }}</p>
                 <p>Assigned Groups: {{ locationProfile.assignedGroups[0] }}</p>
                 
                 <section class="example-section">
@@ -208,7 +208,7 @@
                     <mat-label>Group</mat-label>
                     <mat-select [value]="classMap.group" (selectionChange)="updateGroup($event)" [formControlName]="'group'">
                         <mat-option>None</mat-option>
-                        <mat-option *ngFor="let group of classMap.location.groups" [value]="group">{{ group }}</mat-option>
+                        <mat-option *ngFor="let group of classMap.location.groups" [value]="group">{{ group.text }}</mat-option>
                     </mat-select>
                 </mat-form-field>
 
@@ -216,7 +216,7 @@
                     <mat-label>Rounder</mat-label>
                     <mat-select [value]="classMap.rounder" (selectionChange)="updateRounder($event)" [formControlName]="'rounder'">
                         <mat-option>None</mat-option>
-                        <mat-option *ngFor="let rounder of profileTexts" [value]="rounder">{{ rounder }}</mat-option>
+                        <mat-option *ngFor="let rounder of profiles" [value]="rounder.key">{{ rounder.text }}</mat-option>
                     </mat-select>
                 </mat-form-field>
 
@@ -224,7 +224,7 @@
                     <mat-label>Alertee</mat-label>
                     <mat-select [value]="classMap.alertee" (selectionChange)="updateAlertee($event)" [formControlName]="'alertee'">
                         <mat-option>None</mat-option>
-                        <mat-option *ngFor="let alertee of profileTexts" [value]="alertee">{{ alertee }}</mat-option>
+                        <mat-option *ngFor="let alertee of profiles" [value]="alertee.key">{{ alertee.text }}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
