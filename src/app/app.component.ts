@@ -167,8 +167,12 @@ export class AppComponent {
         this.networkProfileFormGroup.controls.networkProfile.setValue(this.networkProfile);
         this.locationProfileFormGroup.controls.locationProfile.setValue(this.locationProfile);
         
-        this.permissionWizard = new PermissionWizard();
+        this.permissionWizard = new PermissionWizard(this.getProfile);
         this.permissionTable = this.permissionWizard.permissionTable;
+    }
+
+    getProfile(): Profile {
+        return this.profile;
     }
 
     setProfileType(event: MatRadioChange) {
