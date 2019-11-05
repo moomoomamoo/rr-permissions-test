@@ -3,13 +3,22 @@ import { MatRadioChange } from '@angular/material/radio';
 import { MatSelectChange } from '@angular/material/select';
 import { FormControl, FormGroup } from '@angular/forms';
 
+import _package from '../../package.json';
+
 import { Profile, SystemProfile, NetworkProfile, LocationProfile, Network, Location, Group, Action, Actable, PermissionsTable, PermissionWizard, ClassMap } from '@moomoomamoo/rocket-rounding-types';
 
+export interface TestClassMap extends ClassMap {
+    network?: TestNetwork;
+    location?: TestLocation;
+    group?: Group;
+    alerteeKey?: string;
+    rounderKey?: string;
+}
 export class TestLocation extends Location {
     groups: Group[] = [];
     constructor(key: string, networkKey: string, text: string) {
         super(key, networkKey, text);
-        this.netMonthlyPrice = 0;// To bypass any billing logic
+        this.netMonthlyPrice = null;//0;// To bypass any billing logic
     }
 }
 
@@ -50,7 +59,7 @@ export class AppComponent {
 
     profile: Profile;
 
-    classMap: ClassMap;
+    classMap: TestClassMap;
 
     network: TestNetwork;
     location: TestLocation;
@@ -83,11 +92,20 @@ export class AppComponent {
         locationProfileLocation: new FormControl(''),
     });
 
+    debugObj: {
+        "rocket-rounding-types": string;
+    }
+
     constructor() {
 
     }
 
     ngOnInit() {
+        console.log(_package);
+        this.debugObj = {
+            "rocket-rounding-types": _package.dependencies["@moomoomamoo/rocket-rounding-types"]
+        }
+
         this.system = {
             networks: []
         };

@@ -214,7 +214,7 @@
 
                 <mat-form-field *ngIf="classMap.network && classMap.location">
                     <mat-label>Rounder</mat-label>
-                    <mat-select [value]="classMap.rounder" (selectionChange)="updateRounder($event)" [formControlName]="'rounder'">
+                    <mat-select [value]="classMap.rounderKey" (selectionChange)="updateRounder($event)" [formControlName]="'rounder'">
                         <mat-option>None</mat-option>
                         <mat-option *ngFor="let rounder of profiles" [value]="rounder.key">{{ rounder.text }}</mat-option>
                     </mat-select>
@@ -222,7 +222,7 @@
 
                 <mat-form-field *ngIf="classMap.network && classMap.location">
                     <mat-label>Alertee</mat-label>
-                    <mat-select [value]="classMap.alertee" (selectionChange)="updateAlertee($event)" [formControlName]="'alertee'">
+                    <mat-select [value]="classMap.alerteeKey" (selectionChange)="updateAlertee($event)" [formControlName]="'alertee'">
                         <mat-option>None</mat-option>
                         <mat-option *ngFor="let alertee of profiles" [value]="alertee.key">{{ alertee.text }}</mat-option>
                     </mat-select>
@@ -231,3 +231,7 @@
         </div>
     </mat-card-content>
 </mat-card>
+
+<div class="debug">
+    rr-types version: {{ debugObj["rocket-rounding-types"] }}
+</div>

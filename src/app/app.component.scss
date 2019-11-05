@@ -66,3 +66,15 @@ mat-card {
     display: flex;
     flex-direction: column;
 }
+
+.debug {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    padding: 48px;
+    opacity: .2;
+}
+
+.debug:hover {
+    opacity: .9;
+}
