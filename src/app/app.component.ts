@@ -7,6 +7,10 @@ import { Profile, SystemProfile, NetworkProfile, LocationProfile, Network, Locat
 
 export class TestLocation extends Location {
     groups: Group[] = [];
+    constructor(key: string, networkKey: string, text: string) {
+        super(key, networkKey, text);
+        this.netMonthlyPrice = 0;// To bypass any billing logic
+    }
 }
 
 export class TestNetwork extends Network {
