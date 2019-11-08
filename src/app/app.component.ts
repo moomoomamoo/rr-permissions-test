@@ -189,7 +189,7 @@ export class AppComponent {
         this.networkProfileFormGroup.controls.networkProfile.setValue(this.networkProfile);
         this.locationProfileFormGroup.controls.locationProfile.setValue(this.locationProfile);
         
-        this.permissionWizard = new PermissionWizard(this.getProfile);
+        this.permissionWizard = new PermissionWizard(this.getProfile.bind(this));
         this.permissionTable = this.permissionWizard.permissionTable;
     }
 
