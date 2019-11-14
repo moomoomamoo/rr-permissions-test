@@ -9,6 +9,8 @@
             aria-label="Select an profile type">
                 <mat-radio-button *ngFor="let profileType of profileTypes" [value]="profileType">{{ profileType }}</mat-radio-button>
             </mat-radio-group>
+
+            <mat-checkbox class="example-margin" [disabled]="profile.isSystemProfile" [checked]="getProfileIsActive()" (change)="toggleProfileIsActive($event)">Profile is active</mat-checkbox>
         </div>
 
         <div class="layout">

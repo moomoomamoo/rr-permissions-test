@@ -5,7 +5,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 
 import _package from '../../package.json';
 
-import { Profile, SystemProfile, NetworkProfile, LocationProfile, Network, Location, Group, Action, Actable, PermissionsTable, PermissionWizard, ClassMap } from '@moomoomamoo/rocket-rounding-types';
+import { Profile, SystemProfile, NetworkProfile, LocationProfile, Network, Location, Group, Action, Actable, PermissionsTable, PermissionWizard, ClassMap, GeneralPermissionWizard } from '@moomoomamoo/rocket-rounding-types';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 export interface TestClassMap extends ClassMap {
     network?: TestNetwork;
@@ -174,8 +175,13 @@ export class AppComponent {
         this.systemProfile = new SystemProfile('sean', 'Sean', 'sean@smpl.company', 'systemAdmin');
 
         this.networkProfile = new NetworkProfile('nicole', 'music', 'Nicole', 'nicole@smpl.company', 'networkAdmin');
-        
+        this.networkProfile.active = true;
+        this.networkProfile.activeAt = Date.now();
+
         this.locationProfile = new LocationProfile('mark', 'sports', 'chess', 'Mark', 'mark.thompson@smpl.company', 'locationAdmin');
+        this.locationProfile.active = true;
+        this.locationProfile.activeAt = Date.now();
+
         this.locationProfile.assignedGroups = {
             [group1b1.key]: true// Sub 1400
         };
@@ -326,5 +332,55 @@ export class AppComponent {
         this.locationProfile = locationProfile;
 
         this.formGroup.controls.locationProfile && this.formGroup.controls.locationProfile.setValue(locationProfile);
+    }
+
+    toggleProfileIsActive(event: MatCheckboxChange) {
+        console.log(event);
+        
+        if (this.profile.isSystemProfile) {
+            return true;
+        }
+
+        if (this.profile.isNetworkProfile) {
+            const networkProfile = GeneralPermissionWizard.castNetworkProfile(this.profile);
+            networkProfile.active = !networkProfile.active;
+            if (networkProfile.active) {
+                networkProfile.activeAt = Date.now();
+                networkProfile.disabledAt = null;
+            } else {
+                networkProfile.activeAt = null;
+                networkProfile.disabledAt = Date.now();
+            }
+        }
+
+        if (this.profile.isLocationProfile) {
+            const locationProfile = GeneralPermissionWizard.castLocationProfile(this.profile);
+            locationProfile.active = !locationProfile.active;
+            if (locationProfile.active) {
+                locationProfile.activeAt = Date.now();
+                locationProfile.disabledAt = null;
+            } else {
+                locationProfile.activeAt = null;
+                locationProfile.disabledAt = Date.now();
+            }
+        }
+    }
+
+    getProfileIsActive() {
+        if (this.profile.isSystemProfile) {
+            return true;
+        }
+
+        if (this.profile.isNetworkProfile) {
+            const networkProfile = GeneralPermissionWizard.castNetworkProfile(this.profile);
+            return networkProfile.active;
+        }
+
+        if (this.profile.isLocationProfile) {
+            const locationProfile = GeneralPermissionWizard.castLocationProfile(this.profile);
+            return locationProfile.active;
+        }
+
+        return false;
     }
 }
