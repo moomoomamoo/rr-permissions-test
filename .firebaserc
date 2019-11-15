@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "rr-permissions"
+    "dev": "rr-permissions",
+    "staging": "rr-permissions-staging"
   }
 }
