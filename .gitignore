@@ -2,6 +2,8 @@
 
 .firebase
 /.firebase
+.firebase/
+.firebase/*
 
 # compiled output
 /dist
